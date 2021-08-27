@@ -20,7 +20,7 @@ const main = async () => {
 
     server.applyMiddleware({ app });
 
-    app.listen({ port: 4332 }, () => console.log("Server running on port 4332."));
+    app.listen({ port: 4331 }, () => console.log("Server running on port 4331."));
 }
 
 main().catch(err => console.error(err));

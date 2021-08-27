@@ -29,7 +29,7 @@ export class CineplexDataSource extends RESTDataSource {
                 headers: {
                     'User-Agent': ''
                 } 
-            }); 
+            });
             
             if (!response || !response.data) return [];
 
