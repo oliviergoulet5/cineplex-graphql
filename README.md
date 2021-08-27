@@ -1,3 +1,4 @@
+![img](https://i.imgur.com/aeKmHog.png)
 # cineplex-graphql
 🎞 The unofficial GraphQL interface for Cineplex' API.
 
