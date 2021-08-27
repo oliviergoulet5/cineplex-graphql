@@ -1,0 +1,29 @@
+{
+  "name": "cineplex-graphql",
+  "version": "0.0.1",
+  "description": "A GraphQL interface for the Cineplex API",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js --http-parser=legacy",
+    "dev": "nodemon dist/index.js --http-parser=legacy",
+    "watch": "tsc -w",
+    "test": "jest"
+  },
+  "keywords": [
+    "api",
+    "graphql"
+  ],
+  "author": "Olivier Goulet",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-datasource-rest": "^3.2.0",
+    "apollo-server-express": "^3.3.0",
+    "class-validator": "^0.13.1",
+    "express": "^4.17.1",
+    "graphql": "^15.5.1",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1",
+    "typescript": "^4.3.5"
+  }
+}
