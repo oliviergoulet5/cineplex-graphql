@@ -1,4 +1,6 @@
 import { Field, ObjectType, Int, registerEnumType } from 'type-graphql';
+import { EdgeType } from './EdgeType';
+import { ConnectionType } from './ConnectionType';
 
 @ObjectType()
 export class Movie {
@@ -77,6 +79,15 @@ export class Movie {
     @Field()
     seriesTicketingVIPUrl: string;
 }
+
+@ObjectType()
+export class MovieEdge extends EdgeType('movie', Movie) {};
+
+@ObjectType()
+export class MovieConnection extends ConnectionType<MovieEdge>(
+    'movie',
+    MovieEdge,
+) {};
 
 export enum SortableFields {
     name = 'name',
