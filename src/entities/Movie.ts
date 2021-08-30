@@ -1,4 +1,4 @@
-import { Field, ObjectType, Int } from 'type-graphql';
+import { Field, ObjectType, Int, registerEnumType } from 'type-graphql';
 
 @ObjectType()
 export class Movie {
@@ -77,3 +77,13 @@ export class Movie {
     @Field()
     seriesTicketingVIPUrl: string;
 }
+
+export enum SortableFields {
+    name = 'name',
+    runtime = 'runtime'
+}
+
+registerEnumType(SortableFields, {
+    name: 'SortableFields',
+    description: 'Movie fields which are available to sort by.'
+});
