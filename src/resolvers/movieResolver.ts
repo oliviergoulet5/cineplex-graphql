@@ -1,6 +1,7 @@
 import { Arg, Ctx, Query, Resolver, InputType, Field } from 'type-graphql';
 import { Context, SortOrder } from '../types';
 import { Movie, SortableFields } from '../entities/Movie';
+import { swap } from '../utils/swap';
 
 @InputType()
 export class MovieSort {
@@ -20,34 +21,17 @@ const applySort = (movies: Movie[], sortOptions: [MovieSort] | undefined) => {
 
     return movies.sort((a, b) => {
         let result = 0;
-
         sortOptions.forEach((so, i, arr) => {
-            result = 0;
-
-            // if a and b aren't equal from last sorted field, we don't need to sort by next sort.
-            if (i != 0 && a[arr[i - 1].field] !== b[arr[i - 1].field]) return;
+            // Sort by first sort option
+            if (i === 0) { 
+                result = swap(a[so.field], b[so.field], so.order)
+                return;
+            };
             
-            let order = 1;
+            // If two movies don't have the same field from previous sort, there is no reason to sort again with current sort option.
+            if (a[arr[i - 1].field] !== b[arr[i - 1].field]) return;
 
-            // invert order factor if sort order is set to descending
-            if (so.order && so.order === SortOrder.DESC) order *= -1;
-
-            // if either field is undefined, swap values so that movie is above (if ascending) or below (if descending) of the sorted list
-            if (!a[so.field]) {
-                result = -1 * order;
-                return;
-            } else if (!b[so.field]) {
-                result = 1 * order;
-                return;
-            }
-
-            // if field value is number, compare by subtraction (unnecessary, todo: remove)
-            // else if string, compare with >
-            if (isNaN(a[so.field] as any) === false && isNaN(b[so.field] as any) === false) {
-                result = (a[so.field] as number) - (b[so.field] as number) >= 0 ? order : order * -1;
-            } else {
-                result = a[so.field] > b[so.field] ? order : order * -1;
-            }
+            result = swap(a[so.field], b[so.field], so.order);
         });
 
         return result;
