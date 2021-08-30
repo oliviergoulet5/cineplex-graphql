@@ -1,7 +1,9 @@
-import { Arg, Ctx, Query, Resolver, InputType, Field } from 'type-graphql';
+import { Arg, Ctx, Query, Resolver, InputType, Field, Args } from 'type-graphql';
 import { Context, SortOrder } from '../types';
-import { Movie, SortableFields } from '../entities/Movie';
+import { Movie, SortableFields, MovieConnection } from '../entities/Movie';
 import { swap } from '../utils/swap';
+import { ConnectionArgs } from '../entities/ConnectionArgs';
+import * as Relay from 'graphql-relay';
 
 @InputType()
 export class MovieSort {
@@ -40,8 +42,9 @@ const applySort = (movies: Movie[], sortOptions: [MovieSort] | undefined) => {
 
 @Resolver()
 export class MovieResolver {
-    @Query(() => [Movie])
+    @Query(() => MovieConnection)
     async movies(
+        @Args(() => ConnectionArgs) connectionArgs: ConnectionArgs,
         @Arg('sort', () => [MovieSort], { nullable: true }) sortOptions: [MovieSort] | undefined,
         @Ctx() { dataSources: { cineplexAPI } }: Context
     ) {
@@ -49,6 +52,8 @@ export class MovieResolver {
         
         applySort(movies, sortOptions);
 
-        return movies;
+        let c = Relay.connectionFromArray(movies, connectionArgs);
+
+        return c;
     }
 }
