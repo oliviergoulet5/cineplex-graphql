@@ -52,8 +52,6 @@ export class MovieResolver {
         
         applySort(movies, sortOptions);
 
-        let c = Relay.connectionFromArray(movies, connectionArgs);
-
-        return c;
+        return Relay.connectionFromArray(movies, connectionArgs);
     }
 }
