@@ -11,6 +11,10 @@ export class MovieSort {
     order?: SortOrder
 }
 
+/** Applies the sorting of movies by the fields specified.
+ * @argument movies list of movies needed to be sorted 
+ * @argument sortOptions array of sorts needed to be done
+ * */
 const applySort = (movies: Movie[], sortOptions: [MovieSort] | undefined) => {
     if (!sortOptions) return movies;
 
@@ -19,11 +23,16 @@ const applySort = (movies: Movie[], sortOptions: [MovieSort] | undefined) => {
 
         sortOptions.forEach((so, i, arr) => {
             result = 0;
-            if (i != 0 && a[arr[i - 1].field] === b[arr[i - 1].field]) return;
+
+            // if a and b aren't equal from last sorted field, we don't need to sort by next sort.
+            if (i != 0 && a[arr[i - 1].field] !== b[arr[i - 1].field]) return;
+            
             let order = 1;
 
+            // invert order factor if sort order is set to descending
             if (so.order && so.order === SortOrder.DESC) order *= -1;
 
+            // if either field is undefined, swap values so that movie is above (if ascending) or below (if descending) of the sorted list
             if (!a[so.field]) {
                 result = -1 * order;
                 return;
@@ -32,13 +41,11 @@ const applySort = (movies: Movie[], sortOptions: [MovieSort] | undefined) => {
                 return;
             }
 
-            // works flawlessly until here (number only). Number doesnt trigger
-
+            // if field value is number, compare by subtraction (unnecessary, todo: remove)
+            // else if string, compare with >
             if (isNaN(a[so.field] as any) === false && isNaN(b[so.field] as any) === false) {
-                console.log('Is numba');
                 result = (a[so.field] as number) - (b[so.field] as number) >= 0 ? order : order * -1;
             } else {
-                console.log('Is stringu')
                 result = a[so.field] > b[so.field] ? order : order * -1;
             }
         });
