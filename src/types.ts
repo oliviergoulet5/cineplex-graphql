@@ -1,4 +1,5 @@
 import { CineplexDataSource } from "./CineplexDataSource";
+import { registerEnumType } from 'type-graphql';
 
 export type Context = {
     dataSources: { cineplexAPI: CineplexDataSource }
@@ -40,3 +41,13 @@ export type MovieData = {
     seriesTicketingVIPUrl: string,
     runtime: number
 }
+
+export enum SortOrder {
+    ASC = 'ASC',
+    DESC = 'DESC'
+}
+
+registerEnumType(SortOrder, {
+    name: 'SortOrder',
+    description: 'The order by which results are sorted'
+});
